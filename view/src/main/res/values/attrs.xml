@@ -8,6 +8,7 @@
         <attr name="arc_bg_button_on" format="reference"/>
         <attr name="arc_button_off" format="reference"/>
         <attr name="arc_button_on" format="reference"/>
+        <attr name="arc_rotate_bg_button" format="boolean"/>
         <attr name="arc_enable_press" format="enum">
             <enum name="ON" value="1"/>
             <enum name="OFF" value="2"/>

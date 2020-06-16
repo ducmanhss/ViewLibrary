@@ -8,6 +8,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.View.MeasureSpec
 import com.manh.lib.view.R
 
 
@@ -21,8 +22,8 @@ private var ARC_PROGRESS_OFF = R.drawable.bg_bass_01_off
 //private var ARC_PROGRESS_OFF = R.drawable.max_off
 private var ARC_BG_BUTTON_ON=R.drawable.btn_bass_01_bottom_schedule
 private var ARC_BG_BUTTON_OFF=R.drawable.btn_bass_01_bottom
-//private var ARC_BUTTON_ON=R.drawable.btn_bass_01_top
-private var ARC_BUTTON_ON=R.drawable.volume_3
+private var ARC_BUTTON_ON=R.drawable.btn_bass_01_top
+//private var ARC_BUTTON_ON=R.drawable.volume_3
 private var ARC_BUTTON_OFF=R.drawable.btn_bass_01_top_off
 
     private lateinit var mContext:Context
@@ -53,6 +54,7 @@ private lateinit var mBmButtonOff: Bitmap
     private var mViewEnable = true
     private var mPressEnable = false
     private var mIsPress = false
+    private var mIsRotateBgButton = true
 
     private lateinit var mPaintFlags:PaintFlagsDrawFilter
     private lateinit var mPaint:Paint
@@ -105,6 +107,10 @@ private lateinit var mBmButtonOff: Bitmap
         mDrawableProgressOff=typeArray.getResourceId(R.styleable.ArcProgressView_arc_progress_off,ARC_PROGRESS_OFF)!!
         mDrawableProgressOn=typeArray.getResourceId(R.styleable.ArcProgressView_arc_progress_on,ARC_PROGRESS_ON)!!
 
+        val enablePress=typeArray.getInt(R.styleable.ArcProgressView_arc_enable_press,0)
+        mPressEnable = enablePress==1
+        mIsRotateBgButton=typeArray.getBoolean(R.styleable.ArcProgressView_arc_rotate_bg_button,true)
+
         setupBitmap()
         mPaintFlags= PaintFlagsDrawFilter(0,3)
         mPaint= Paint()
@@ -132,7 +138,8 @@ private lateinit var mBmButtonOff: Bitmap
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val min = Math.min(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec))
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+//        super.onMeasure(widthMeasureSpec, widthMeasureSpec)
+        super.onMeasure(MeasureSpec.makeMeasureSpec(min, MeasureSpec.getMode(widthMeasureSpec)), MeasureSpec.makeMeasureSpec(min, MeasureSpec.getMode(heightMeasureSpec)))
 
     }
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -217,12 +224,17 @@ setupBitmapFromSetting()
         //ở đây +219 hay -141 hay bất kì 1 số khác là do chúng ta cần đưa nấc trên button về đúng vị trí ban đầu vì mỗi design vẽ nấc button ở vị trí khác nhau
 //        val degrees = 219 + sweepAngle
         val degrees = sweepAngle-141
-        Log.e(TAG,"degrees : "+degrees+" / "+"sweepAngle : "+sweepAngle)
-        mRectF.set(20f,20f,width-20f,height-20f)
-        drawBgButton(canvas)
-        canvas.rotate(degrees,centerX,centerY)
         //vì cái button bên trong bóng đè lên progress nên set lại khoảng cách vẽ
-        drawButton(canvas)
+        mRectF.set(20f,20f,width-20f,height-20f)
+        if (!mIsRotateBgButton) {
+            drawBgButton(canvas)
+            canvas.rotate(degrees, centerX, centerY)
+            drawButton(canvas)
+        }else{
+            canvas.rotate(degrees, centerX, centerY)
+            drawBgButton(canvas)
+            drawButton(canvas)
+        }
     }
 
 
@@ -414,14 +426,22 @@ setupBitmapFromSetting()
         setupPaintShaderProgress(width,height)
         return this
     }
-    fun setViewEnable(enable:Boolean){
+    fun setViewEnable(enable:Boolean):ArcProgressView{
         mViewEnable=enable
         invalidate()
+        return this
     }
-    fun setPressEnable(enable:Boolean){
+    fun setPressEnable(enable:Boolean):ArcProgressView{
         mPressEnable=enable
 //        invalidate()
+        return this
     }
+    fun setRotateBgButtonEnable(enable:Boolean):ArcProgressView{
+        mIsRotateBgButton=enable
+        return this
+//        invalidate()
+    }
+
     fun setMax(max:Int):ArcProgressView{
         MAX=max
         return this
