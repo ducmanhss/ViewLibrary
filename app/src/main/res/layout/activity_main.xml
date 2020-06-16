@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#004378"
+    tools:context=".MainActivity">
+
+
+<com.manh.lib.view.audio.ArcProgressView
+    android:id="@+id/arc"
+    android:layout_width="220dp"
+    android:layout_height="220dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+
+    app:layout_constraintTop_toTopOf="parent"
+  />
+<com.manh.lib.view.audio.VerticalSeekbarView
+    android:id="@+id/sbv"
+    android:layout_width="32dp"
+    android:layout_height="520dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toRightOf="@id/arc"
+    app:layout_constraintRight_toRightOf="parent"
+
+    app:layout_constraintTop_toTopOf="parent"
+  />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

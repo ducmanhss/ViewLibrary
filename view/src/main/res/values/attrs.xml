@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ArcProgressView">
+        <attr name="arc_progress_bg" format="reference"/>
+        <attr name="arc_progress_on" format="reference"/>
+        <attr name="arc_progress_off" format="reference"/>
+        <attr name="arc_bg_button_off" format="reference"/>
+        <attr name="arc_bg_button_on" format="reference"/>
+        <attr name="arc_button_off" format="reference"/>
+        <attr name="arc_button_on" format="reference"/>
+        <attr name="arc_enable_press" format="enum">
+            <enum name="ON" value="1"/>
+            <enum name="OFF" value="2"/>
+        </attr>
+
+    </declare-styleable>
+</resources>
