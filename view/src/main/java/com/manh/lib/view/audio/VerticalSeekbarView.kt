@@ -58,9 +58,9 @@ class VerticalSeekbarView:View {
     private lateinit var mRectButton: RectF
 
     private var k=0
-    private var MAX=200
+    private var MAX=100
      private var MIN=0
-    private var progress=50
+    private var progress=0
     //chiều dài progress theo button so vs view
     private var lenght=0
     //Tỷ lệ của button
@@ -195,7 +195,9 @@ if (mListener!=null){
                 }
             }
             MotionEvent.ACTION_UP->{
-
+if (mListener!=null){
+    mListener!!.onSeekbarStop()
+}
             }
         }
 
@@ -207,15 +209,23 @@ if (mListener!=null){
         MAX=max
         return this
     }
+    fun getMax():Int{
+        return MAX
+    }
     fun setProgress(progress:Int):VerticalSeekbarView{
         this.progress=MAX-progress
         return this
     }
-    fun registerListener(listener: OnVerticalSeekbarViewChangeListener){
+    fun getProgress():Int{
+        return progress
+    }
+    fun setOnVerticalSeekbarViewChangeListener(listener: OnVerticalSeekbarViewChangeListener){
         mListener=listener
     }
 
     interface OnVerticalSeekbarViewChangeListener{
         fun onSeekbarChanged(progress: Int)
+        fun onSeekbarStart()
+        fun onSeekbarStop()
     }
 }
