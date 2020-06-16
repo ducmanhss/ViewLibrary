@@ -13,14 +13,16 @@ import com.manh.lib.view.R
 
 class ArcProgressView: View {
     private val TAG="ArcProgressView"
-private var ARC_PROGRESS_BG = R.drawable.bg_bass_01_default
-private var ARC_PROGRESS_ON = R.drawable.bg_bass_01_schedule
-private var ARC_PROGRESS_OFF = R.drawable.bg_bass_01_off
-//    private var ARC_PROGRESS_ON = R.drawable.max_on
-//private var ARC_PROGRESS_OFF = R.drawable.max_off
+//private var ARC_PROGRESS_BG = R.drawable.bg_bass_01_default
+//private var ARC_PROGRESS_ON = R.drawable.bg_bass_01_schedule
+//private var ARC_PROGRESS_OFF = R.drawable.bg_bass_01_off
+private var ARC_PROGRESS_BG = R.drawable.max_off
+    private var ARC_PROGRESS_ON = R.drawable.max_on
+private var ARC_PROGRESS_OFF = R.drawable.max_off
 private var ARC_BG_BUTTON_ON=R.drawable.btn_bass_01_bottom_schedule
 private var ARC_BG_BUTTON_OFF=R.drawable.btn_bass_01_bottom
-private var ARC_BUTTON_ON=R.drawable.btn_bass_01_top
+//private var ARC_BUTTON_ON=R.drawable.btn_bass_01_top
+private var ARC_BUTTON_ON=R.drawable.volume_3
 private var ARC_BUTTON_OFF=R.drawable.btn_bass_01_top_off
 
     private lateinit var mContext:Context
@@ -216,10 +218,10 @@ setupBitmapFromSetting()
 //        val degrees = 219 + sweepAngle
         val degrees = sweepAngle-141
         Log.e(TAG,"degrees : "+degrees+" / "+"sweepAngle : "+sweepAngle)
-        canvas.rotate(degrees,centerX,centerY)
-        //vì cái button bên trong bóng đè lên progress nên set lại khoảng cách vẽ
         mRectF.set(20f,20f,width-20f,height-20f)
         drawBgButton(canvas)
+        canvas.rotate(degrees,centerX,centerY)
+        //vì cái button bên trong bóng đè lên progress nên set lại khoảng cách vẽ
         drawButton(canvas)
     }
 
@@ -298,6 +300,11 @@ setupBitmapFromSetting()
             mIsPress=false
             if (mListener!=null){
                 mListener!!.onTouchStop()
+            }
+        }
+        if (event.action==MotionEvent.ACTION_DOWN){
+            if (mListener!=null){
+                mListener!!.onTouchStart()
             }
         }
         invalidate()
@@ -418,6 +425,9 @@ setupBitmapFromSetting()
         MAX=max
         return this
     }
+fun getMax():Int{
+    return MAX
+}
     fun setProgress(progress: Int):ArcProgressView{
        degrees=progress.toFloat()
         return this
@@ -427,8 +437,12 @@ setupBitmapFromSetting()
     fun setOnSeekBarChangeListener(listener:OnSeekBarChangeListener){
     mListener=listener
     }
+    fun getProgress():Int{
+        return degrees.toInt()
+    }
 
     interface OnSeekBarChangeListener{
+        fun onTouchStart()
         fun onTouchStop()
         fun onTouchChange(progress:Int)
     }
