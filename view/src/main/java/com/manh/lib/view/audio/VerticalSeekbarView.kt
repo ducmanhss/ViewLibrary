@@ -62,7 +62,9 @@ class VerticalSeekbarView:View {
      private var MIN=0
     private var progress=0
     //chiều dài progress theo button so vs view
-    private var lenght=0
+    private var lenghtView=0
+    private var lenghtMaxMin=0
+
     //Tỷ lệ của button
     private var buttonRatio =4
 
@@ -83,7 +85,6 @@ class VerticalSeekbarView:View {
         mBitmapBgProgress=BitmapFactory.decodeResource(resources,SB_PROGRESS_BG)
         mBitmapProgress=BitmapFactory.decodeResource(resources,SB_PROGRESS_ON)
         mBitmapButton=BitmapFactory.decodeResource(resources,SB_BUTTON_ON)
-Log.e(TAG,"init")
         mRectF= RectF()
         mRectButton= RectF()
     }
@@ -99,7 +100,8 @@ Log.e(TAG,"init")
 //        this.k = (width - mBitmapProgress.width) / 2
          maxCurr=height-mBitmapButton.height/buttonRatio
          minCurr=mBitmapButton.height/buttonRatio
-        lenght=maxCurr-minCurr
+        lenghtView=maxCurr-minCurr
+        lenghtMaxMin=MAX-MIN
         setupParams()
         initRatioProgress(minCurr)
 
@@ -107,25 +109,26 @@ Log.e(TAG,"init")
     private fun initRatioProgress(minCurr:Int){
 //        val curr=currPosition-minCurr
 ////        progress=(lenght/MAX)*curr.toFloat()
-        currPosition=progress*lenght/MAX+minCurr
+        currPosition=progress*lenghtView/lenghtMaxMin+minCurr
+
+        if (currPosition-mBitmapButton.height/buttonRatio<0){
+            currPosition=mBitmapButton.height/buttonRatio
+        }
+        if (currPosition+mBitmapButton.height/buttonRatio>height){
+            currPosition=height-mBitmapButton.height/buttonRatio
+        }
     }
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        Log.e(TAG,"onDraw")
         setupParams()
         drawProgressView(canvas)
         drawButtonView(canvas)
-        Log.e(TAG,"onDraw")
     }
 
     private fun setupParams() {
-//        if (currPosition-mBitmapButton.height/buttonRatio<0){
-//            currPosition=mBitmapButton.height/buttonRatio
-//        }
-//        if (currPosition+mBitmapButton.height/buttonRatio>height){
-//            currPosition=height-mBitmapButton.height/buttonRatio
-//        }
         initRatioProgress(minCurr)
-        Log.e(TAG,"progress "+progress+" lenght"+lenght)
+
     }
 
     private fun drawProgressView(canvas: Canvas?) {
@@ -160,8 +163,6 @@ Log.e(TAG,"init")
         val mRectF=RectF()
 //        mRectF.set(width/(1/6f)+0f,mCurrPosition+0f,width/(6/5f)+0f,mBitmapButton.height/(5f)+0f)
         mRectF.top=currPosition+0f
-        Log.e(TAG,"Top "+mRectF.top+" height bt "+mBitmapButton.height)
-        Log.e(TAG,"w "+width+" height  "+height)
 //            canvas.drawBitmap(mBitmapButton,(width-mBitmapButton.width)/2f,mRectF.top-(mBitmapButton.height/2f),null)
 
         val src = Rect(0,0,mBitmapButton.width+0,mBitmapButton.height+0)
@@ -187,22 +188,30 @@ Log.e(TAG,"init")
 
                 if (currPosition-mBitmapButton.height/buttonRatio>=0&&currPosition+mBitmapButton.height/buttonRatio<=height) {
                    val mCurrPosition = event!!.y.toInt() - positionOld
-                    progress=((mCurrPosition-minCurr)*MAX/lenght).toInt()
+                    progress=((mCurrPosition-minCurr)*lenghtMaxMin/lenghtView).toInt()
                     if (progress>MAX){
                         progress=MAX
                     }
                     if (progress<MIN){
                         progress=MIN
                     }
-if (mListener!=null){
-    mListener!!.onSeekbarChanged(MAX-progress)
-}
+                if (mListener!=null){
+                    mListener!!.onSeekbarChanged((progress-lenghtMaxMin/2)*-1)
+
                 }
+                }
+                if (progress>lenghtMaxMin){
+                    progress=lenghtMaxMin
+                }
+                if (progress<MIN){
+                    progress=0
+                }
+                Log.e(TAG,"move progress "+progress)
             }
             MotionEvent.ACTION_UP->{
-if (mListener!=null){
-    mListener!!.onSeekbarStop()
-}
+                if (mListener!=null){
+                    mListener!!.onSeekbarStop()
+                }
             }
         }
 
@@ -218,7 +227,9 @@ if (mListener!=null){
         return MAX
     }
     fun setProgress(progress:Int):VerticalSeekbarView{
-        this.progress=MAX-progress
+//        this.progress=(progress-lenghtMaxMin/2)*-1
+        this.progress=progress
+        invalidate()
         return this
     }
     fun getProgress():Int{

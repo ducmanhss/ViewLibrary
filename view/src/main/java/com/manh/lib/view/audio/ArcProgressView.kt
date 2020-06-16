@@ -17,9 +17,9 @@ class ArcProgressView: View {
 private var ARC_PROGRESS_BG = R.drawable.bg_bass_01_default
 private var ARC_PROGRESS_ON = R.drawable.bg_bass_01_schedule
 private var ARC_PROGRESS_OFF = R.drawable.bg_bass_01_off
-//private var ARC_PROGRESS_BG = R.drawable.max_off
-//    private var ARC_PROGRESS_ON = R.drawable.max_on
-//private var ARC_PROGRESS_OFF = R.drawable.max_off
+//private var ARC_PROGRESS_BG = R.drawable.max_on
+//    private var ARC_PROGRESS_ON = R.drawable.max_off
+//private var ARC_PROGRESS_OFF = R.drawable.max_on
 private var ARC_BG_BUTTON_ON=R.drawable.btn_bass_01_bottom_schedule
 private var ARC_BG_BUTTON_OFF=R.drawable.btn_bass_01_bottom
 private var ARC_BUTTON_ON=R.drawable.btn_bass_01_top

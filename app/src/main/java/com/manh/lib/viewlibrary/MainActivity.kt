@@ -34,8 +34,10 @@ val TAG="MainActivity"
 //            })
 ////            .setViewEnable(true)
 
-sbv.setMax(500)
-    .setProgress(100)
+sbv
+    .setMax(30)
+
+    .setProgress(10)
     .setOnVerticalSeekbarViewChangeListener(object :VerticalSeekbarView.OnVerticalSeekbarViewChangeListener{
         override fun onSeekbarChanged(progress: Int) {
             Log.e(TAG,"VerticalSB "+progress)

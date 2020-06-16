@@ -10,10 +10,11 @@
 
 <com.manh.lib.view.audio.ArcProgressView
     android:id="@+id/arc"
-    android:layout_width="220dp"
-    android:layout_height="220dp"
+    android:layout_width="320dp"
+    android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
+
     app:arc_rotate_bg_button="false"
     app:layout_constraintTop_toTopOf="parent"
   />
