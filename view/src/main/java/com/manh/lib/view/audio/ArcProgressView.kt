@@ -277,6 +277,18 @@ setupBitmapFromSetting()
         if (!mViewEnable){
             return false
         }
+        if (event!!.action==MotionEvent.ACTION_UP){
+            mIsPress=false
+            if (mListener!=null){
+                mListener!!.onTouchStop()
+            }
+        }
+        if (event.action==MotionEvent.ACTION_DOWN){
+            if (mListener!=null){
+                mListener!!.onTouchStart()
+            }
+        }
+
         if (event!!.action==MotionEvent.ACTION_DOWN){
             val dx: Float = event.x - centerX
             val dy: Float = event.y - centerY
@@ -295,17 +307,6 @@ setupBitmapFromSetting()
         if (event!!.action==MotionEvent.ACTION_MOVE) {
             mIsPress = true
             onMoveView(event)
-        }
-        if (event.action==MotionEvent.ACTION_UP){
-            mIsPress=false
-            if (mListener!=null){
-                mListener!!.onTouchStop()
-            }
-        }
-        if (event.action==MotionEvent.ACTION_DOWN){
-            if (mListener!=null){
-                mListener!!.onTouchStart()
-            }
         }
         invalidate()
         return true
@@ -425,11 +426,12 @@ setupBitmapFromSetting()
         MAX=max
         return this
     }
-fun getMax():Int{
-    return MAX
-}
+    fun getMax():Int{
+        return MAX
+    }
     fun setProgress(progress: Int):ArcProgressView{
        degrees=progress.toFloat()
+        invalidate()
         return this
 
     }

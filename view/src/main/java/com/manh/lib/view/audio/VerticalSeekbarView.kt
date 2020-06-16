@@ -173,10 +173,15 @@ Log.e(TAG,"init")
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-
+        if (!mViewEnable){
+            return false
+        }
         when(event!!.action){
             MotionEvent.ACTION_DOWN->{
 //mPositionOld=event!!.y.toInt()
+                if (mListener!=null){
+                    mListener!!.onSeekbarStart()
+                }
             }
             MotionEvent.ACTION_MOVE->{
 
@@ -218,6 +223,10 @@ if (mListener!=null){
     }
     fun getProgress():Int{
         return progress
+    }
+
+    fun setEnable(enable:Boolean){
+        mViewEnable=enable
     }
     fun setOnVerticalSeekbarViewChangeListener(listener: OnVerticalSeekbarViewChangeListener){
         mListener=listener
