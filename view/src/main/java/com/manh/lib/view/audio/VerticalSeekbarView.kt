@@ -67,7 +67,7 @@ class VerticalSeekbarView:View {
 
     //Tỷ lệ của button
     private var heightButtonRatio =1
-    private var ratioDefault =4
+    private var ratioDefault =3
 
     private var mListener:OnVerticalSeekbarViewChangeListener?=null
     constructor(context: Context?) : super(context){
@@ -175,7 +175,7 @@ class VerticalSeekbarView:View {
         mRectF.top=currPosition+0f
 //            canvas.drawBitmap(mBitmapButton,(width-mBitmapButton.width)/2f,mRectF.top-(mBitmapButton.height/2f),null)
 
-        val src = Rect(0,0,mBitmapButton.width+0,mBitmapButton.height+0)
+        val src = Rect(10,10,mBitmapButton.width-10,mBitmapButton.height-10)
         val dst =RectF(0f,mRectF.top-(mBitmapButton.height/heightButtonRatio),width+0f,mRectF.top+mBitmapButton.height/heightButtonRatio+0f)
             canvas.drawBitmap(mBitmapButton,src,dst,null)
 //        canvas.restore()
