@@ -66,7 +66,8 @@ class VerticalSeekbarView:View {
 //    private var lenghtMaxMin=0
 
     //Tỷ lệ của button
-    private var buttonRatio =4
+    private var heightButtonRatio =1
+    private var ratioDefault =4
 
     private var mListener:OnVerticalSeekbarViewChangeListener?=null
     constructor(context: Context?) : super(context){
@@ -97,11 +98,22 @@ class VerticalSeekbarView:View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
 
-//        this.k = (width - mBitmapProgress.width) / 2
-         maxCurr=height-mBitmapButton.height/buttonRatio
-         minCurr=mBitmapButton.height/buttonRatio
+        if (ratioDefault-(w/18-ratioDefault)>0){
+//        if (w/18>=ratioDefault) {
+//            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(w/18-ratioDefault)).toInt()
+//        }else{
+            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault+(ratioDefault-w/18)).toInt()
+//        }
+        }else{
+            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(ratioDefault-1)).toInt()
+        }
+
+         maxCurr=height-mBitmapButton.height/heightButtonRatio
+         minCurr=mBitmapButton.height/heightButtonRatio
         lenghtView=maxCurr-minCurr
         setupParams()
+
+        Log.e(TAG,"w "+width)
 //        initRatioProgress(minCurr)
 
     }
@@ -110,11 +122,11 @@ class VerticalSeekbarView:View {
 ////        progress=(lenght/MAX)*curr.toFloat()
         currPosition=progress*lenghtView/MAX+minCurr
 
-        if (currPosition-mBitmapButton.height/buttonRatio<0){
-            currPosition=mBitmapButton.height/buttonRatio
+        if (currPosition-mBitmapButton.height/heightButtonRatio<0){
+            currPosition=mBitmapButton.height/heightButtonRatio
         }
-        if (currPosition+mBitmapButton.height/buttonRatio>height){
-            currPosition=height-mBitmapButton.height/buttonRatio
+        if (currPosition+mBitmapButton.height/heightButtonRatio>height){
+            currPosition=height-mBitmapButton.height/heightButtonRatio
         }
     }
     override fun onDraw(canvas: Canvas?) {
@@ -164,7 +176,7 @@ class VerticalSeekbarView:View {
 //            canvas.drawBitmap(mBitmapButton,(width-mBitmapButton.width)/2f,mRectF.top-(mBitmapButton.height/2f),null)
 
         val src = Rect(0,0,mBitmapButton.width+0,mBitmapButton.height+0)
-        val dst =RectF(0f,mRectF.top-(mBitmapButton.height/buttonRatio),width+0f,mRectF.top+mBitmapButton.height/buttonRatio+0f)
+        val dst =RectF(0f,mRectF.top-(mBitmapButton.height/heightButtonRatio),width+0f,mRectF.top+mBitmapButton.height/heightButtonRatio+0f)
             canvas.drawBitmap(mBitmapButton,src,dst,null)
 //        canvas.restore()
 //        }
@@ -184,7 +196,7 @@ class VerticalSeekbarView:View {
             }
             MotionEvent.ACTION_MOVE->{
 
-                if (currPosition-mBitmapButton.height/buttonRatio>=0&&currPosition+mBitmapButton.height/buttonRatio<=height) {
+                if (currPosition-mBitmapButton.height/heightButtonRatio>=0&&currPosition+mBitmapButton.height/heightButtonRatio<=height) {
                    val mCurrPosition = event!!.y.toInt() - positionOld
                     progress=((mCurrPosition-minCurr)*MAX/lenghtView).toInt()
                     if (progress>MAX){
@@ -238,6 +250,14 @@ class VerticalSeekbarView:View {
     fun setEnable(enable:Boolean){
         mViewEnable=enable
     }
+//    fun getHeightRatio():Int{
+//        return buttonRatio
+//    }
+//
+//    fun setHeightButtonRatio(ratio:Int){
+//        buttonRatio=ratio
+//    }
+
     fun setOnVerticalSeekbarViewChangeListener(listener: OnVerticalSeekbarViewChangeListener){
         mListener=listener
     }

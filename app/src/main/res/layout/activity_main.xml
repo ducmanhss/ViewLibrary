@@ -10,7 +10,7 @@
 
 <com.manh.lib.view.audio.ArcProgressView
     android:id="@+id/arc"
-    android:layout_width="320dp"
+    android:layout_width="220dp"
     android:layout_height="wrap_content"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
@@ -20,7 +20,7 @@
   />
 <com.manh.lib.view.audio.VerticalSeekbarView
     android:id="@+id/sbv"
-    android:layout_width="32dp"
+    android:layout_width="94dp"
     android:layout_height="520dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toRightOf="@id/arc"
