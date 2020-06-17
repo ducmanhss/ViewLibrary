@@ -63,7 +63,7 @@ class VerticalSeekbarView:View {
     private var progress=0
     //chiều dài progress theo button so vs view
     private var lenghtView=0
-    private var lenghtMaxMin=0
+//    private var lenghtMaxMin=0
 
     //Tỷ lệ của button
     private var buttonRatio =4
@@ -100,16 +100,14 @@ class VerticalSeekbarView:View {
 //        this.k = (width - mBitmapProgress.width) / 2
          maxCurr=height-mBitmapButton.height/buttonRatio
          minCurr=mBitmapButton.height/buttonRatio
-        lenghtView=maxCurr-minCurr
-        lenghtMaxMin=MAX-MIN
         setupParams()
-        initRatioProgress(minCurr)
+//        initRatioProgress(minCurr)
 
     }
     private fun initRatioProgress(minCurr:Int){
 //        val curr=currPosition-minCurr
 ////        progress=(lenght/MAX)*curr.toFloat()
-        currPosition=progress*lenghtView/lenghtMaxMin+minCurr
+        currPosition=progress*lenghtView/MAX+minCurr
 
         if (currPosition-mBitmapButton.height/buttonRatio<0){
             currPosition=mBitmapButton.height/buttonRatio
@@ -120,7 +118,6 @@ class VerticalSeekbarView:View {
     }
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        Log.e(TAG,"onDraw")
         setupParams()
         drawProgressView(canvas)
         drawButtonView(canvas)
@@ -188,7 +185,7 @@ class VerticalSeekbarView:View {
 
                 if (currPosition-mBitmapButton.height/buttonRatio>=0&&currPosition+mBitmapButton.height/buttonRatio<=height) {
                    val mCurrPosition = event!!.y.toInt() - positionOld
-                    progress=((mCurrPosition-minCurr)*lenghtMaxMin/lenghtView).toInt()
+                    progress=((mCurrPosition-minCurr)*MAX/lenghtView).toInt()
                     if (progress>MAX){
                         progress=MAX
                     }
@@ -196,17 +193,17 @@ class VerticalSeekbarView:View {
                         progress=MIN
                     }
                 if (mListener!=null){
-                    mListener!!.onSeekbarChanged((progress-lenghtMaxMin/2)*-1)
+                    mListener!!.onSeekbarChanged((progress-MAX/2)*-1)
 
                 }
                 }
-                if (progress>lenghtMaxMin){
-                    progress=lenghtMaxMin
+                if (progress>MAX){
+                    progress=MAX
                 }
                 if (progress<MIN){
                     progress=0
                 }
-                Log.e(TAG,"move progress "+progress)
+
             }
             MotionEvent.ACTION_UP->{
                 if (mListener!=null){
@@ -221,9 +218,11 @@ class VerticalSeekbarView:View {
 
     fun setMax(max:Int):VerticalSeekbarView{
         MAX=max
+
         return this
     }
     fun getMax():Int{
+
         return MAX
     }
     fun setProgress(progress:Int):VerticalSeekbarView{
