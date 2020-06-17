@@ -67,7 +67,7 @@ class VerticalSeekbarView:View {
 
     //Tỷ lệ của button
     private var heightButtonRatio =1
-    private var ratioDefault =3
+    private var ratioDefault =4
 
     private var mListener:OnVerticalSeekbarViewChangeListener?=null
     constructor(context: Context?) : super(context){

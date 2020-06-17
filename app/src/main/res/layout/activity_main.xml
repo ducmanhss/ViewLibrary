@@ -21,7 +21,7 @@
 <com.manh.lib.view.audio.VerticalSeekbarView
     android:id="@+id/sbv"
     android:layout_width="24dp"
-    android:layout_height="520dp"
+    android:layout_height="320dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toRightOf="@id/arc"
     app:layout_constraintRight_toRightOf="parent"
