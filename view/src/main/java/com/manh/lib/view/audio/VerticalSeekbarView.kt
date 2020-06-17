@@ -100,6 +100,7 @@ class VerticalSeekbarView:View {
 //        this.k = (width - mBitmapProgress.width) / 2
          maxCurr=height-mBitmapButton.height/buttonRatio
          minCurr=mBitmapButton.height/buttonRatio
+        lenghtView=maxCurr-minCurr
         setupParams()
 //        initRatioProgress(minCurr)
 
@@ -203,7 +204,6 @@ class VerticalSeekbarView:View {
                 if (progress<MIN){
                     progress=0
                 }
-
             }
             MotionEvent.ACTION_UP->{
                 if (mListener!=null){
