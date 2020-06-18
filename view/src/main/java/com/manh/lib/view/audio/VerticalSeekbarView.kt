@@ -68,7 +68,8 @@ class VerticalSeekbarView:View {
     //Tỷ lệ của button
     private var heightButtonRatio =1
     private var ratioDefault =4
-
+    private var density =0f
+    private var ratioDensity =2
     private var mListener:OnVerticalSeekbarViewChangeListener?=null
     constructor(context: Context?) : super(context){
         mContext=context!!
@@ -97,7 +98,8 @@ class VerticalSeekbarView:View {
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-
+        density=context.resources.displayMetrics.density
+        ratioDefault=ratioDefault+(density/ratioDensity).toInt()
         if (ratioDefault-(w/18-ratioDefault)>0){
 //        if (w/18>=ratioDefault) {
 //            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(w/18-ratioDefault)).toInt()
@@ -112,8 +114,9 @@ class VerticalSeekbarView:View {
          minCurr=mBitmapButton.height/heightButtonRatio
         lenghtView=maxCurr-minCurr
         setupParams()
-
         Log.e(TAG,"w "+width)
+        Log.e(TAG,"den "+context.resources.displayMetrics.density)
+        Log.e(TAG,"dendpi "+context.resources.displayMetrics.densityDpi)
 //        initRatioProgress(minCurr)
 
     }
@@ -175,7 +178,7 @@ class VerticalSeekbarView:View {
         mRectF.top=currPosition+0f
 //            canvas.drawBitmap(mBitmapButton,(width-mBitmapButton.width)/2f,mRectF.top-(mBitmapButton.height/2f),null)
 
-        val src = Rect(10,10,mBitmapButton.width-10,mBitmapButton.height-10)
+        val src = Rect((10*density).toInt(),(10*density).toInt(),mBitmapButton.width-(10*density).toInt(),mBitmapButton.height-(10*density).toInt())
         val dst =RectF(0f,mRectF.top-(mBitmapButton.height/heightButtonRatio),width+0f,mRectF.top+mBitmapButton.height/heightButtonRatio+0f)
             canvas.drawBitmap(mBitmapButton,src,dst,null)
 //        canvas.restore()
@@ -261,7 +264,11 @@ class VerticalSeekbarView:View {
     fun setOnVerticalSeekbarViewChangeListener(listener: OnVerticalSeekbarViewChangeListener){
         mListener=listener
     }
-
+fun onDeleteCacheBitmap(){
+    mBitmapButton.recycle()
+    mBitmapBgProgress.recycle()
+    mBitmapProgress.recycle()
+}
     interface OnVerticalSeekbarViewChangeListener{
         fun onSeekbarChanged(progress: Int)
         fun onSeekbarStart()

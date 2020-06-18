@@ -462,6 +462,31 @@ setupBitmapFromSetting()
     fun getProgress():Int{
         return degrees.toInt()
     }
+    fun onDeleteCacheBitmap(){
+        mBitmapProgress.recycle()
+        mBitmapButton.recycle()
+        mBitmapBgProgress.recycle()
+        mBitmapBgButton.recycle()
+        mBmButtonOff.recycle()
+        mBmButtonOn.recycle()
+        mBmBgButtonOff.recycle()
+        mBmBgButtonOn.recycle()
+        mBmProgressOff.recycle()
+        mBmProgressOn.recycle()
+    }
+//    fun onDeleteCacheBitmapNull(){
+//        mBitmapProgress=null
+//        mBitmapButton.recycle()
+//        mBitmapBgProgress.recycle()
+//        mBitmapBgButton.recycle()
+//        mBmButtonOff.recycle()
+//        mBmButtonOn.recycle()
+//        mBmBgButtonOff.recycle()
+//        mBmBgButtonOn.recycle()
+//        mBmProgressOff.recycle()
+//        mBmProgressOn.recycle()
+//    }
+
 
     interface OnSeekBarChangeListener{
         fun onTouchStart()
