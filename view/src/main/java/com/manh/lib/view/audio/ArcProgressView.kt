@@ -450,7 +450,7 @@ setupBitmapFromSetting()
         return MAX
     }
     fun setProgress(progress: Int):ArcProgressView{
-       degrees=-progress.toFloat()
+       degrees=progress.toFloat()
         invalidate()
         return this
 

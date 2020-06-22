@@ -242,7 +242,7 @@ class VerticalSeekbarView:View {
     }
     fun setProgress(progress:Int):VerticalSeekbarView{
 //        this.progress=(progress-lenghtMaxMin/2)*-1
-        this.progress=progress
+        this.progress=progress*(-1)
         invalidate()
         return this
     }
