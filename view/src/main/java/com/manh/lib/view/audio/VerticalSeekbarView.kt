@@ -67,6 +67,7 @@ class VerticalSeekbarView:View {
 
     //Tỷ lệ của button
     private var heightButtonRatio =1
+    private var heightButton =1
     private var ratioDefault =4
     private var density =0f
     private var ratioDensity =2
@@ -99,37 +100,38 @@ class VerticalSeekbarView:View {
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         density=context.resources.displayMetrics.density
-        ratioDefault=ratioDefault+(density/ratioDensity).toInt()
-        if (ratioDefault-(w/18-ratioDefault)>0){
-//        if (w/18>=ratioDefault) {
-//            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(w/18-ratioDefault)).toInt()
+//        ratioDefault=ratioDefault+(density/ratioDensity).toInt()
+//        if (ratioDefault-(w/18-ratioDefault)>0){
+////        if (w/18>=ratioDefault) {
+////            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(w/18-ratioDefault)).toInt()
+////        }else{
+//            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault+(ratioDefault-w/18)).toInt()
+////        }
 //        }else{
-            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault+(ratioDefault-w/18)).toInt()
+//            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(ratioDefault-1)).toInt()
 //        }
-        }else{
-            heightButtonRatio = mBitmapButton.height / mBitmapButton.width * (ratioDefault-(ratioDefault-1)).toInt()
-        }
 
-         maxCurr=height-mBitmapButton.height/heightButtonRatio
-         minCurr=mBitmapButton.height/heightButtonRatio
+//        heightButtonRatio=mBitmapButton.height/mBitmapButton.width
+//        var centerHeightButton=w*heightButtonRatio
+        // vì height button = width button nên khi vẽ button ta vẽ width button bên trong và cũng bằng vs width của view cha nên height button ta cũng đặt = width
+        heightButton=width
+        Log.d(TAG," w = ${w} / h = ${h}" )
+        Log.d(TAG," wBt = ${mBitmapButton.width} / hBt = ${mBitmapButton.height}" )
+         maxCurr=height-heightButton/2
+         minCurr=heightButton/2
         lenghtView=maxCurr-minCurr
         setupParams()
-        Log.e(TAG,"w "+width)
-        Log.e(TAG,"den "+context.resources.displayMetrics.density)
-        Log.e(TAG,"dendpi "+context.resources.displayMetrics.densityDpi)
 //        initRatioProgress(minCurr)
 
     }
     private fun initRatioProgress(minCurr:Int){
-//        val curr=currPosition-minCurr
-////        progress=(lenght/MAX)*curr.toFloat()
-        currPosition=progress*lenghtView/MAX+minCurr
 
-        if (currPosition-mBitmapButton.height/heightButtonRatio<0){
-            currPosition=mBitmapButton.height/heightButtonRatio
+        currPosition=progress*lenghtView/MAX+minCurr
+        if (currPosition-heightButton/2<0){
+            currPosition=heightButton/2.toInt()
         }
-        if (currPosition+mBitmapButton.height/heightButtonRatio>height){
-            currPosition=height-mBitmapButton.height/heightButtonRatio
+        if (currPosition+heightButton/2>height){
+            currPosition=height-heightButton/2.toInt()
         }
     }
     override fun onDraw(canvas: Canvas?) {
@@ -168,21 +170,18 @@ class VerticalSeekbarView:View {
 
         val src = Rect(0,0,mBitmapProgress.width+0,mBitmapProgress.height+0)
         val dst = Rect(0,0,width-0,height-0)
-//        val dst = Rect(20,20,width-20,height-20)
         canvas.drawBitmap(mBitmapProgress,src,dst,null)
         canvas.restore()
     }
     private fun drawButton(canvas: Canvas){
         val mRectF=RectF()
-//        mRectF.set(width/(1/6f)+0f,mCurrPosition+0f,width/(6/5f)+0f,mBitmapButton.height/(5f)+0f)
         mRectF.top=currPosition+0f
-//            canvas.drawBitmap(mBitmapButton,(width-mBitmapButton.width)/2f,mRectF.top-(mBitmapButton.height/2f),null)
 
-        val src = Rect((10*density).toInt(),(10*density).toInt(),mBitmapButton.width-(10*density).toInt(),mBitmapButton.height-(10*density).toInt())
-        val dst =RectF(0f,mRectF.top-(mBitmapButton.height/heightButtonRatio),width+0f,mRectF.top+mBitmapButton.height/heightButtonRatio+0f)
+//        val src = Rect((10*density).toInt(),(10*density).toInt(),mBitmapButton.width-(10*density).toInt(),mBitmapButton.height-(10*density).toInt())
+        val src = Rect((10).toInt(),(10).toInt(),mBitmapButton.width-(10).toInt(),mBitmapButton.height-(10).toInt())
+        //vì ở phía trên tính lenght view để sẵn khoảng cách vẽ button r nên ở đây cần phải trừ/cộng bù lại vị trí vẽ
+        val dst =RectF(0f,mRectF.top-heightButton/2,width+0f,mRectF.top+heightButton/2)
             canvas.drawBitmap(mBitmapButton,src,dst,null)
-//        canvas.restore()
-//        }
 
     }
 
@@ -199,7 +198,7 @@ class VerticalSeekbarView:View {
             }
             MotionEvent.ACTION_MOVE->{
 
-                if (currPosition-mBitmapButton.height/heightButtonRatio>=0&&currPosition+mBitmapButton.height/heightButtonRatio<=height) {
+                if (currPosition-heightButton/2>=0&&currPosition+heightButton/2<=height) {
                    val mCurrPosition = event!!.y.toInt() - positionOld
                     progress=((mCurrPosition-minCurr)*MAX/lenghtView).toInt()
                     if (progress>MAX){
