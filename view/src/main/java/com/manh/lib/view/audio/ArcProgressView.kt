@@ -204,7 +204,7 @@ setupBitmapFromSetting()
             degrees=MIN.toFloat()
         }
         //tính toán sweepAngle dựa trên mỗi tiến trình
-        sweepAngle = 282f * (degrees / MAX)
+        sweepAngle = 284f * (degrees / MAX)
         Log.e(TAG,"degrees1 "+degrees)
 
         if (mListener!=null){
@@ -223,7 +223,7 @@ setupBitmapFromSetting()
     private fun drawViewButton(canvas: Canvas) {
         //ở đây +219 hay -141 hay bất kì 1 số khác là do chúng ta cần đưa nấc trên button về đúng vị trí ban đầu vì mỗi design vẽ nấc button ở vị trí khác nhau
 //        val degrees = 219 + sweepAngle
-        val degrees = sweepAngle-141
+        val degrees = sweepAngle-142
         //vì cái button bên trong bóng đè lên progress nên set lại khoảng cách vẽ
         mRectF.set(20f,20f,width-20f,height-20f)
         if (!mIsRotateBgButton) {
@@ -243,7 +243,7 @@ setupBitmapFromSetting()
     }
 
     private fun drawProgress(canvas: Canvas){
-        canvas.drawArc(mRectF,129f,sweepAngle,true,mPaint)
+        canvas.drawArc(mRectF,127f,sweepAngle,true,mPaint)
     }
     private fun drawBgButton(canvas: Canvas){
 //        canvas.drawBitmap(mBitmapBgButton,mLeft,mTop,null)
