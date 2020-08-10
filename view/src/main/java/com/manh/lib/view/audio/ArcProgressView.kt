@@ -5,10 +5,8 @@ import android.graphics.*
 import android.graphics.Matrix.ScaleToFit
 import android.util.AttributeSet
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.MeasureSpec
 import com.manh.lib.view.R
 
 
@@ -43,13 +41,6 @@ private lateinit var mBitmapButton: Bitmap
 
 
 //private lateinit var mBitmapBgProgress: Bitmap
-
-private lateinit var mBmProgressOn: Bitmap
-private lateinit var mBmProgressOff: Bitmap
-private lateinit var mBmBgButtonOn: Bitmap
-private lateinit var mBmBgButtonOff: Bitmap
-private lateinit var mBmButtonOn: Bitmap
-private lateinit var mBmButtonOff: Bitmap
 
     private var mViewEnable = true
     private var mPressEnable = false
@@ -119,15 +110,6 @@ private lateinit var mBmButtonOff: Bitmap
     }
 
     private fun setupBitmap() {
-        mBmBgButtonOn=BitmapFactory.decodeResource(resources,mDrawableBgButtonOn)
-        mBmBgButtonOff=BitmapFactory.decodeResource(resources,mDrawableBgButtonOff)
-
-        mBmButtonOn=BitmapFactory.decodeResource(resources,mDrawableButtonOn)
-        mBmButtonOff=BitmapFactory.decodeResource(resources,mDrawableButtonOff)
-
-        mBmProgressOn=BitmapFactory.decodeResource(resources,mDrawableProgressOn)
-        mBmProgressOff=BitmapFactory.decodeResource(resources,mDrawableProgressOff)
-
 
         mBitmapBgProgress=BitmapFactory.decodeResource(resources,mDrawableBgProgress)
         mBitmapProgress=BitmapFactory.decodeResource(resources,mDrawableProgressOn)
@@ -173,16 +155,16 @@ setupBitmapFromSetting()
     }
     private fun setupBitmapFromSetting(){
         if (mIsPress&&mPressEnable){
-            mBitmapBgButton=mBmBgButtonOn
+            mBitmapBgButton=BitmapFactory.decodeResource(resources,mDrawableBgButtonOn)
         }else{
-            mBitmapBgButton=mBmBgButtonOff
+            mBitmapBgButton=BitmapFactory.decodeResource(resources,mDrawableBgButtonOff)
         }
     if (mViewEnable){
-        mBitmapButton=mBmButtonOn
-        mBitmapProgress=mBmProgressOn
+        mBitmapButton=BitmapFactory.decodeResource(resources,mDrawableButtonOn)
+        mBitmapProgress=BitmapFactory.decodeResource(resources,mDrawableProgressOn)
     }else{
-        mBitmapButton=mBmButtonOff
-        mBitmapProgress=mBmProgressOff
+        mBitmapButton=BitmapFactory.decodeResource(resources,mDrawableButtonOff)
+        mBitmapProgress=BitmapFactory.decodeResource(resources,mDrawableProgressOff)
     }
     }
 
@@ -195,7 +177,7 @@ setupBitmapFromSetting()
         drawViewProgress(canvas)
         drawViewButton(canvas)
         canvas.restore()
-        Log.e(TAG,"onDraw")
+
     }
     private fun setupParams(){
         if (degrees>MAX){
@@ -205,7 +187,7 @@ setupBitmapFromSetting()
         }
         //tính toán sweepAngle dựa trên mỗi tiến trình
         sweepAngle = 284f * (degrees / MAX)
-        Log.e(TAG,"degrees1 "+degrees)
+
 
         if (mListener!=null){
             mListener!!.onTouchChange(degrees.toInt())
@@ -248,11 +230,10 @@ setupBitmapFromSetting()
     private fun drawBgButton(canvas: Canvas){
 //        canvas.drawBitmap(mBitmapBgButton,mLeft,mTop,null)
 //        mRectF.set(20f,20f,width-20f,height-20f)
-        Log.e(TAG,"mIsPress :"+mIsPress+" mPressEnable :"+mPressEnable)
         if (mIsPress&&mPressEnable){
-            mBitmapBgButton=mBmBgButtonOn
+            mBitmapBgButton=BitmapFactory.decodeResource(resources,mDrawableBgButtonOn)
         }else{
-            mBitmapBgButton=mBmBgButtonOff
+            mBitmapBgButton=BitmapFactory.decodeResource(resources,mDrawableBgButtonOff)
         }
         canvas.drawBitmap(mBitmapBgButton,null,mRectF,null)
     }
@@ -313,7 +294,7 @@ setupBitmapFromSetting()
             downDegrees =
                 Math.floor(downDegrees / 360 * (MAX + 5).toDouble()).toFloat()
             return true
-            Log.e(TAG,"down")
+
         }
 
         if (event!!.action==MotionEvent.ACTION_MOVE) {
@@ -327,7 +308,7 @@ setupBitmapFromSetting()
     private fun onMoveView(event: MotionEvent){
         val dx: Float = event.x - centerX
         val dy: Float = event.y - centerY
-        Log.e(TAG,"x "+event.x+" y "+event.y)
+
         val radians = Math.atan2(dy.toDouble(), dx.toDouble())
         currDegrees = (radians * 180 / Math.PI).toFloat()
         currDegrees -= 90f
@@ -365,24 +346,6 @@ setupBitmapFromSetting()
     private fun setBackgroundProgressBitmap(bitmap:Bitmap){
         mBitmapBgProgress=bitmap
     }
-    private fun setProgressOnBitmap(bitmap: Bitmap){
-        mBmProgressOn=bitmap
-    }
-    private fun setProgressOffBitmap(bitmap: Bitmap){
-        mBmProgressOff=bitmap
-    }
-    private fun setBackgroundButtonOnBitmap(bitmap: Bitmap){
-        mBmBgButtonOn=bitmap
-    }
-    private fun setBackgroundButtonOffBitmap(bitmap: Bitmap){
-        mBmBgButtonOff=bitmap
-    }
-    private fun setButtonOnBitmap(bitmap: Bitmap){
-        mBmButtonOn=bitmap
-    }
-    private fun setButtonOffBitmap(bitmap: Bitmap){
-        mBmButtonOff=bitmap
-    }
 
     fun setBackgroundProgressDrawable(img:Int):ArcProgressView{
         val decodeResource=BitmapFactory.decodeResource(resources,img)
@@ -390,36 +353,7 @@ setupBitmapFromSetting()
         return this
     }
 
-    fun setProgressOnDrawable(img: Int):ArcProgressView{
-        val decodeResource=BitmapFactory.decodeResource(resources,img)
-        setProgressOnBitmap(decodeResource)
-        return this
-    }
-    fun setProgressOffDrawable(img: Int):ArcProgressView{
-        val decodeResource=BitmapFactory.decodeResource(resources,img)
-        setProgressOffBitmap(decodeResource)
-        return this
-    }
-    fun setBackgroundButtonOnDrawable(img: Int):ArcProgressView{
-        val decodeResource=BitmapFactory.decodeResource(resources,img)
-        setBackgroundButtonOnBitmap(decodeResource)
-        return this
-    }
-    fun setBackgroundButtonOffDrawable(img: Int):ArcProgressView{
-        val decodeResource=BitmapFactory.decodeResource(resources,img)
-        setBackgroundButtonOffBitmap(decodeResource)
-        return this
-    }
-    fun setButtonOnDrawable(img: Int):ArcProgressView{
-        val decodeResource=BitmapFactory.decodeResource(resources,img)
-        setButtonOnBitmap(decodeResource)
-        return this
-    }
-    fun setButtonOffDrawable(img: Int):ArcProgressView{
-        val decodeResource=BitmapFactory.decodeResource(resources,img)
-        setButtonOffBitmap(decodeResource)
-        return this
-    }
+
 
     fun onResetBitmapView():ArcProgressView{
         setupBitmapFromSetting()
@@ -467,12 +401,6 @@ setupBitmapFromSetting()
         mBitmapButton.recycle()
         mBitmapBgProgress.recycle()
         mBitmapBgButton.recycle()
-        mBmButtonOff.recycle()
-        mBmButtonOn.recycle()
-        mBmBgButtonOff.recycle()
-        mBmBgButtonOn.recycle()
-        mBmProgressOff.recycle()
-        mBmProgressOn.recycle()
     }
 //    fun onDeleteCacheBitmapNull(){
 //        mBitmapProgress=null
